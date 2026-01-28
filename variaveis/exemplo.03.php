@@ -1,4 +1,5 @@
 <?php 
+
 //$ cria varíaveis de todos os tipos
 $nome = "hcode";
 $site = 'www.hcode.com.br';
@@ -20,6 +21,7 @@ $nascimento = new DateTime();
 
 $arquivo = fopen("exemplo.03.php", "r");
 
+//var_dump serve como um debug para mostrar: tipo de dado, valor, tamanho e estrutura(se for um array por exemplo mostra a posição [posição aqui dentro])//
 //var_dump($arquivo);
 
 $nulo = null;
