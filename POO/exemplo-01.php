@@ -53,7 +53,7 @@ class Carro{
     return array(
         "modelo" => $this->getModelo(),
         "cor"=> $this->getCor(),
-        "WHP"=> $this->getWHP()cd
+        "WHP"=> $this->getWHP()
     );
 
     }
@@ -65,6 +65,6 @@ $BMW->setModelo("M3 F80");
 $BMW->setCor("Yas Marina Blue");
 $BMW->setWHP("431-CV");
 
-print_r($BMW->exibir());
+print_r($BMW->exibir())
 
 ?>
