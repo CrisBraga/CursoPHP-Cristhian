@@ -1,6 +1,6 @@
 <?php 
 
-//isto é um autoload de outra pasta, suponhamos que eu queira chamar uma classe de outro exercicio, eu adiciono assim.
+//isto é um autoload de outro exercício, suponhamos que eu queira chamar uma classe de outro exercicio, se adiciona assim.
 function __autoload($nomeClasse){
 
     if(file_exists($nomeClasse. ".php")=== true){
@@ -9,7 +9,28 @@ function __autoload($nomeClasse){
 
 }
 
+//isso serve para puxar a classe de outra pasta, os dois são parecidos porém tem pequenas diferenças de separação em questão de pasta.
 spl_autoload_register("incluirClasses");
+spl_autoload_register(function($nomeClasse){
+
+    if(file_exists("aqui colocar a pasta que quer puxar a classe" . DIRECTORY_SEPARATOR . $nomeClasse. "php")=== true){
+            require_once($nomeClasse. ".php");
+    }
+
+});
+
+spl_autoload_register(function($nameClass){
+
+    $dirClass = "class";
+    $filename = $dirClass . DIRECTORY_SEPARATOR . $nameClass. ".php";
+
+    if(file_exists($filename)){
+
+        require_once($filename);
+
+    }
+
+});
 
 abstract class Animal{
 
