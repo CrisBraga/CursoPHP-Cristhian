@@ -1,5 +1,5 @@
 <?php 
-
+/*
 class Cadastro {
 
     private $nome;
@@ -60,5 +60,5 @@ class Cadastro {
     }
 
 }
-
+*/
 ?>
