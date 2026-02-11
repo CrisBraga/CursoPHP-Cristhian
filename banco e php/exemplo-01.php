@@ -27,6 +27,10 @@ try{
     //o fetchALL é um tradutor, o resultado obtido vira uma tabela do php
     $categorias = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
+    function verificarTipo(){
+        
+    }
+
     //verifica se o usuario clicou no botão
     if ($_SERVER ['REQUEST_METHOD'] === 'POST'){
 
@@ -53,55 +57,66 @@ try{
 
     }
 
-    echo "Instancia criada e conectada com sucesso";
-
 } catch(PDOException $e){
     echo "Erro na conexão: " . $e->getMessage();
 }
 
 ?>
 
- <?php //form é o corpo do html
-        //action diz para qual arquivo os dados devem ir, caso vazio retorna para a pagina que ja estou
-        //method é o modo de envio ao postgres
-        //required é pra deixar o campo obrigatóriamente preenchido
-        //label é a etiqueta de lembrança, nela você escreve seu texto para ser mostrado ao usuario
+<!-- form é o corpo do código, sera colocado tudo dentro dele -->
+<form class="meu-formulario" action="" method="POST">
+    <!-- h2 é o cabeçalho -->
+    <h1>Cadastrar Equipamentos</h1>
 
-        //input é onde o usuario ira interagir, por exemplo com essa etiqueta de nome de equipamento, logo a frente ele precisa colocar o  nome do equipamento neste input. type="text" abre uma caixa para letras e números, type="number" so aceita números e name"nome do seu campo" é como voce ira chamar aquele dado no php, por exemplo eu chamo o $POST['txt_nome'].
-        //step é para a precisão de numeros por exemplo step="0.01" vai ser 100,00
+    <!-- div é onde define um espaço entao tudo que estiver fora dele pula uma linha para não ficarem colados -->
+    <div class="campo">
+        <label>Tipo de Item</label>
+        <select id="tipo_item" name="tipo_item" onchange="verificarTipo()">
+            <option value="">Selecionar</option>
+            <option value="equipamento">Equipamento</option>
+            <option value="semente">Semente</option>
+        </select>
+    </div>
 
-        //select é o menu que é uma lista de opções 
-        //option são os itens que ficam escondidos no select
+    <div id="campo_semente" style="display: none;" class="campo">
+        <label>Tipo de Semente:</label>
+        <input type="text" name="txt_tipo">
+    </div>
 
+    <div id="campo_equipamento" style="display: none;" class="campo">
+        <label>Nome do Equipamento: </label>
+        <input type="text" name="txt_nome">
+    </div>
 
-        //==========================
-        //     IMPORTANTE
-        //==========================
-        //o foreach pega a sua lista zona ($categorias) e começa a percorrê-la, uma linha por vez.
-        //o option value é o que o banco de dados realmente quer receber. O usuário não vê o value, mas quando ele seleciona "Ferramentas", o formulário entende que você selecionou o número 2.
-        //<?= $cat['nome'] "?">Este é o texto que aparece para o ser humano ler dentro da caixinha de seleção
-        //o endforeach como o nome ja diz, fecha o foreach e continua o código
-        ?>
-
-
-<form action="" method="POST">
-    
+    <div class="campo">
+    <!-- label é o texto que será visto pelo usuario -->
     <label>Nome do Equipamento: </label>
+    <!-- input é onde fica o quadrado de texto ou etc. aqui é texto mesmo, mas pode ser number e submit
+     o required é onde eu faço o usuario adicionar os dados -->
     <input type="text" name="txt_nome" required>
+    </div>
 
+    <div class="campo">
     <label>Preço:</label>
-    <input type="number" step="0.01" name="txt_preco" required>
+    <!-- step define quantas casas decimais para tras pode ir, placehololder é o texto que fica dentro da caixa -->
+    <input type="number" step="0.01" placeholder="0,00" name="txt_preco" required>
+    </div>
 
+    <div class="campo">
     <label>Vincular ao Estoque</label>
     <select name="sel_estoque">
         <option value="">Selecione...</option>
 
+        <!-- vamos supor que categorias é um baú cheio de informações que vieram do banco 
+         "as $cat" é a mão que vai tirando as informações uma por uma
+         o $cat id é o id do item e o cat nome é o nome que vai aparecer desse item-->
         <?php foreach($categorias as $cat): ?>
-            <option value="<?=  $cat['id'] ?>">
-                 <?=  $cat['nome'] ?>
-            </option>
+        <option value="<?=  $cat['id'] ?>">
+            <?=  $cat['nome'] ?>
+        </option>
         <?php endforeach; ?>
     </select>
+        </div>
 
     <button type="submit">Cadastrar</button>
 </form>
