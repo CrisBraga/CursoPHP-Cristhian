@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $host = 'localhost';
 $port = '5433';
@@ -8,7 +8,7 @@ $pass = 'acesse';
 
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
 
-try{
+try {
 
     //cria uma nova conexão (PDO = obejto de dados do PHP com segurança)
     $conn = new PDO($dsn, $user, $pass);
@@ -27,12 +27,10 @@ try{
     //o fetchALL é um tradutor, o resultado obtido vira uma tabela do php
     $categorias = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
-    function verificarTipo(){
-        
-    }
+    function verificarTipo() {}
 
     //verifica se o usuario clicou no botão
-    if ($_SERVER ['REQUEST_METHOD'] === 'POST'){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //pegamos os valores criados no formulario atraves do 'name'
         $nomeProduto = $_POST['txt_nome'];
@@ -48,18 +46,33 @@ try{
 
         //executado com sucesso e envio dos valores reais para o banco
         $stmt->execute([
-            ':nome'      =>$nomeProduto,
-            ':preco'     =>$precoProduto,
-            ':estoque_id'=>$idEstoque
+            ':nome'      => $nomeProduto,
+            ':preco'     => $precoProduto,
+            ':estoque_id' => $idEstoque
         ]);
 
-        echo"<p style='color:green;'>Sucesso! Equipamento cadastrado.</p>";
-
+        echo "<p style='color:green;'>Sucesso! Equipamento cadastrado.</p>";
     }
-
-} catch(PDOException $e){
+} catch (PDOException $e) {
     echo "Erro na conexão: " . $e->getMessage();
 }
+
+$id = $_GET['id'];
+$stmt = $conn->prepare("SELECT * FROM equipamentos WHERE id = ?");
+$stmt->execute([$id]);
+$equipamentos = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($_Server['REQUEST_METHOD'] === 'POST') {
+    $novoNome = $_POST['txt_nome'];
+
+    $sql = "UPDATE equipamentos SET nome = :nome WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(['nome' => $novoNome, 'id' => $id]);
+
+    header("location: visualizar.php");
+}
+
+//podemos adicionar rollback() para cancelar a mudança no código, por exemplo, se tal coisa der certo mas outra der errado, cancela.
 
 ?>
 
@@ -89,34 +102,47 @@ try{
     </div>
 
     <div class="campo">
-    <!-- label é o texto que será visto pelo usuario -->
-    <label>Nome do Equipamento: </label>
-    <!-- input é onde fica o quadrado de texto ou etc. aqui é texto mesmo, mas pode ser number e submit
+        <!-- label é o texto que será visto pelo usuario -->
+        <label>Nome do Equipamento: </label>
+        <!-- input é onde fica o quadrado de texto ou etc. aqui é texto mesmo, mas pode ser number e submit
      o required é onde eu faço o usuario adicionar os dados -->
-    <input type="text" name="txt_nome" required>
+        <input type="text" name="txt_nome" required>
     </div>
 
     <div class="campo">
-    <label>Preço:</label>
-    <!-- step define quantas casas decimais para tras pode ir, placehololder é o texto que fica dentro da caixa -->
-    <input type="number" step="0.01" placeholder="0,00" name="txt_preco" required>
+        <label>Preço:</label>
+        <!-- step define quantas casas decimais para tras pode ir, placehololder é o texto que fica dentro da caixa -->
+        <input type="number" step="0.01" placeholder="0,00" name="txt_preco" required>
     </div>
 
     <div class="campo">
-    <label>Vincular ao Estoque</label>
-    <select name="sel_estoque">
-        <option value="">Selecione...</option>
+        <label>Vincular ao Estoque</label>
+        <select name="sel_estoque">
+            <option value="">Selecione...</option>
 
-        <!-- vamos supor que categorias é um baú cheio de informações que vieram do banco 
+            <!-- vamos supor que categorias é um baú cheio de informações que vieram do banco 
          "as $cat" é a mão que vai tirando as informações uma por uma
          o $cat id é o id do item e o cat nome é o nome que vai aparecer desse item-->
-        <?php foreach($categorias as $cat): ?>
-        <option value="<?=  $cat['id'] ?>">
-            <?=  $cat['nome'] ?>
-        </option>
-        <?php endforeach; ?>
-    </select>
-        </div>
+            <?php foreach ($categorias as $cat): ?>
+            <option value="<?= $cat['id'] ?>">
+                <?= $cat['nome'] ?>
+            </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
     <button type="submit">Cadastrar</button>
 </form>
+
+<?php
+
+$stmt = $conn->query("SELECT * FROM equipamentos");
+$lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($lista as $item) {
+    echo $item['nome'] . " - ";
+
+    echo "<a href='editar.php?id=" . $item['id'] . ">Editar</a><br>";
+}
+
+?>
