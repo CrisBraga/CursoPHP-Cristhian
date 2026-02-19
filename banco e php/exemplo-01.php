@@ -62,7 +62,7 @@ $stmt = $conn->prepare("SELECT * FROM equipamentos WHERE id = ?");
 $stmt->execute([$id]);
 $equipamentos = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($_Server['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $novoNome = $_POST['txt_nome'];
 
     $sql = "UPDATE equipamentos SET nome = :nome WHERE id = :id";
@@ -71,6 +71,7 @@ if ($_Server['REQUEST_METHOD'] === 'POST') {
 
     header("location: visualizar.php");
 }
+
 
 //podemos adicionar rollback() para cancelar a mudança no código, por exemplo, se tal coisa der certo mas outra der errado, cancela.
 
@@ -124,9 +125,9 @@ if ($_Server['REQUEST_METHOD'] === 'POST') {
          "as $cat" é a mão que vai tirando as informações uma por uma
          o $cat id é o id do item e o cat nome é o nome que vai aparecer desse item-->
             <?php foreach ($categorias as $cat): ?>
-            <option value="<?= $cat['id'] ?>">
-                <?= $cat['nome'] ?>
-            </option>
+                <option value="<?= $cat['id'] ?>">
+                    <?= $cat['nome'] ?>
+                </option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -144,5 +145,6 @@ foreach ($lista as $item) {
 
     echo "<a href='editar.php?id=" . $item['id'] . ">Editar</a><br>";
 }
+
 
 ?>
