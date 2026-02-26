@@ -1,52 +1,82 @@
-<!-- form é o corpo do código, sera colocado tudo dentro dele -->
-<form class="meu-formulario" action="" method="POST">
-    <!-- h2 é o cabeçalho -->
-    <h1>Cadastrar Equipamentos</h1>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    <!-- div é onde define um espaço entao tudo que estiver fora dele pula uma linha para não ficarem colados -->
-    <div class="campo">
-        <label>Tipo de Item</label>
-        <select id="tipo_item" name="tipo_item" onchange="verificarTipo()">
-            <option value="">Selecionar</option>
-            <option value="equipamento">Equipamento</option>
-            <option value="semente">Semente</option>
-        </select>
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Estoque - Gemini</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
 
-    <div id="campo_semente" style="display: none;" class="campo">
-        <label>Tipo de Semente:</label>
-        <input type="text" name="txt_tipo">
-    </div>
+        form {
+            background: #d8d8d8;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+        }
 
-    <div class="campo">
-        <!-- label é o texto que será visto pelo usuario -->
-        <label>Nome do Equipamento: </label>
-        <!-- input é onde fica o quadrado de texto ou etc. aqui é texto mesmo, mas pode ser number e submit
-     o required é onde eu faço o usuario adicionar os dados -->
-        <input type="text" name="txt_nome" required>
-    </div>
+        .campo {
+            margin-bottom: 15px;
+        }
 
-    <div class="campo">
-        <label>Preço:</label>
-        <!-- step define quantas casas decimais para tras pode ir, placehololder é o texto que fica dentro da caixa -->
-        <input type="number" step="0.01" placeholder="0,00" name="txt_preco" required>
-    </div>
+        label {
+            display: block;
+            font-weight: bold;
+        }
 
-    <div class="campo">
-        <label>Vincular ao Estoque</label>
-        <select name="sel_estoque">
-            <option value="">Selecione...</option>
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
 
-            <!-- vamos supor que categorias é um baú cheio de informações que vieram do banco 
-         "as $cat" é a mão que vai tirando as informações uma por uma
-         o $cat id é o id do item e o cat nome é o nome que vai aparecer desse item-->
-            <?php foreach ($categorias as $cat): ?>
-                <option value="<?= $cat['id'] ?>">
-                    <?= $cat['nome'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-    <button type="submit">Cadastrar</button>
-</form>
+        button.editar {
+            background: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2><?= $produtoEditar ? "Editar Produto" : "Cadastrar Novo Produto" ?></h2>
+
+    <form action="exercicio_pratico.php" method="POST">
+        <input type="hidden" name="id_escondido" value="<?= $produtoEditar['id'] ?? '' ?>">
+
+        <div class="campo">
+            <label>Nome do Produto:</label>
+            <input type="text" name="txt_nome" value="<?= $produtoEditar['nome'] ?? '' ?>" required>
+        </div>
+
+        <div class="campo">
+            <label>Preço (R$):</label>
+            <input type="number" step="0.01" name="txt_preco" value="<?= $produtoEditar['preco'] ?? '' ?>" required>
+        </div>
+
+        <button type="submit" class="<?= $produtoEditar ? 'editar' : '' ?>">
+            <?= $produtoEditar ? "Salvar Alterações" : "Cadastrar Produto" ?>
+        </button>
+
+        <?php if ($produtoEditar): ?>
+            <a href="exercicio_pratico.php">Cancelar Edição</a>
+        <?php endif; ?>
+    </form>
+
+    <hr>
+
+    <h3>Estoque Atual (Controlado por Trigger)</h3>
+</body>
+
+</html>
