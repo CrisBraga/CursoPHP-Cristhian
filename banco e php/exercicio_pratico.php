@@ -5,7 +5,7 @@ require_once 'conexão.php';
 $produtoEditar = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['txt_nome'];
+    $nome  = $_POST['txt_nome'];
     $preco = $_POST['txt_preco'];
     $id    = $_POST['id_escondido'] ?? null;
 
@@ -46,11 +46,12 @@ if ($stmt) {
     $lista = [];
 }
 
+
 foreach ($lista as $item) {
+
     echo "Produto: " . $item['nome'] . " | Estoque: " . $item['quantidade_estoque'];
+
     echo " - <a href='exercicio_pratico.php?id=" . $item['id'] . "'>Editar</a><br>";
 }
-
-
 
 require_once 'html_exercicio.php';

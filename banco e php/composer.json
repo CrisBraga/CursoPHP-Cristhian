@@ -1,0 +1,17 @@
+{
+    "name": "dotplan1/bancoephp",
+    "autoload": {
+        "psr-4": {
+            "Dotplan1\\Bancoephp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cristhian Braga",
+            "email": "crisbraga0412@gmail.com"
+        }
+    ],
+    "require": {
+        "robmorgan/phinx": "^0.14.0"
+    }
+}
