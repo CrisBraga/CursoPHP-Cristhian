@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exe.DOM</title>
+    <style>
+        body{
+            background: rgb(173, 173, 173);
+            color: black;
+            font: normal 20pt Arial;
+        }
+
+        div#textBoxSoma{
+            background: rgb(93, 93, 168);
+            width: 350px;
+            padding: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1> soma dos valores</h1>
+    <div id="textBoxSoma">
+        seu nivel de matematica: </br>
+        quanto é 5 + 25?</br>
+        <input type="number" name="txtresult" id="txtresult">
+        <input type="button" value="Resultado" onclick="verificar()">
+
+        <script>
+            function verificar(){
+                var resInput = window.document.getElementById('txtresult') 
+                var caixa = window.document.getElementById('textBoxSoma')
+    
+                var resposta = Number(resInput.value)
+
+                if(resposta === 30){
+                    caixa.innerText = "Correto, Parabéns!!!"
+                    caixa.style.background = "green"
+                }
+                else{
+                    caixa.innerText = "hello world"
+                    caixa.style.background = "white"
+                }
+                
+            }
+        </script>
+    </div>
+</body>
+</html>
